@@ -10,7 +10,7 @@ dependencies:
 
 targets:
   typhar:
-    main: src/typhar.cr
+    main: src/cli.cr
 
 crystal: 0.20.4
 
