@@ -14,14 +14,15 @@ module Typhar
     end
 
     def transform() : String
-      last_offset = 0
-      str = String.build do |builder|
+      current_offset = 0
+
+      String.build do |builder|
         # Advance position
         displacer.advance_to_next!(source_scanner)
         
         plaintext_scanner.string.each_char do |msg_char|
           # Grab previously unmodified section
-          unmodified = source_scanner.string[last_offset...source_scanner.offset]
+          unmodified = source_scanner.string[current_offset...source_scanner.offset]
           builder << unmodified
 
           # Replace the next char
@@ -30,18 +31,15 @@ module Typhar
           builder << replaced_char
 
           # Record this offset
-          last_offset = source_scanner.offset
+          current_offset = source_scanner.offset
 
           # Advance position
           displacer.advance_to_next!(source_scanner)
         end
 
-        rest_size = source_scanner.string.size - last_offset
-        builder << source_scanner.string[last_offset..rest_size]
-
+        builder << source_scanner.rest
         builder
       end
-      str
     end
 
     def displacer
