@@ -1,0 +1,17 @@
+name: typhar
+version: 0.1.0
+
+authors:
+  - Max Fierke <max@maxfierke.com>
+
+dependencies:
+  cli:
+    github: mosop/cli
+
+targets:
+  typhar:
+    main: src/typhar.cr
+
+crystal: 0.20.4
+
+license: MIT

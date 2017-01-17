@@ -1,0 +1,18 @@
+version: 1.0
+shards:
+  callback:
+    github: mosop/callback
+    version: 0.5.0.1
+
+  cli:
+    github: mosop/cli
+    version: 0.5.1.5
+
+  optarg:
+    github: mosop/optarg
+    version: 0.4.2.9
+
+  string_inflection:
+    github: mosop/string_inflection
+    version: 0.2.0
+
