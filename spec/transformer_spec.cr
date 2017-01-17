@@ -8,17 +8,18 @@ describe Typhar::Transformer do
 
       plaintext = "hello"
       plaintext_scanner = StringScanner.new(plaintext)
+      seed = 123.to_u32
 
       transformer = Typhar::Transformer.new(
         plaintext_scanner,
         source_scanner,
-        Typhar::DisplacementStrategies::NCharOffset.new(plaintext_scanner, 123, 20),
-        Typhar::ReplacementStrategies::NShifter.new(123, 0)
+        Typhar::DisplacementStrategies::NCharOffset.new(plaintext_scanner, seed, 20),
+        Typhar::ReplacementStrategies::NShifter.new(seed, 0)
       )
 
-      puts transformer.transform
-
-      true.should eq(true)
+      transformer.transform.should eq(
+        "I am a test sentenceh The quick brown foxejumps over the lazy log. That dog is lazylas fuck. God damn. Hotta be that be like this man come on son. Why."
+      )
     end
   end
 end
