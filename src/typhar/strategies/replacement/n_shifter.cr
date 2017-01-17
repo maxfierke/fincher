@@ -3,7 +3,7 @@ module Typhar
     class NShifter < Base
       getter n
 
-      def initialize(@seed : Int32, @n : Int32)
+      def initialize(@seed : UInt32, @n : Int32)
       end
 
       def replace(to_replace : String | Char | Nil) : String | Char | Nil

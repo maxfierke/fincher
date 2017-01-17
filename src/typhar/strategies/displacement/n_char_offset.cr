@@ -3,7 +3,7 @@ module Typhar
     class NCharOffset < Base
       getter offset
 
-      def initialize(@plaintext_scanner : StringScanner, @seed : Int32, @offset : Int32)
+      def initialize(@plaintext_scanner : StringScanner, @seed : UInt32, @offset : Int32)
       end
 
       def advance_to_next!(scanner : StringScanner) : StringScanner

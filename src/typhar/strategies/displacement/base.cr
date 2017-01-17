@@ -4,7 +4,7 @@ module Typhar
       getter seed
       getter plaintext_scanner
 
-      def initialize(@plaintext_scanner : StringScanner, @seed : Int32)
+      def initialize(@plaintext_scanner : StringScanner, @seed : UInt32)
       end
 
       abstract def advance_to_next!(scanner : StringScanner) : StringScanner
