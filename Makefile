@@ -5,7 +5,7 @@ PREFIX      ?= /usr/local
 all: build
 build: deps
 	mkdir -p bin
-	$(CRYSTAL_BIN) build --debug -o bin/typhar src/typhar.cr $(CRFLAGS)
+	$(CRYSTAL_BIN) build --debug -o bin/typhar src/cli.cr $(CRFLAGS)
 deps:
 	$(CRYSTAL_BIN) deps check || $(CRYSTAL_BIN) deps install
 clean:
