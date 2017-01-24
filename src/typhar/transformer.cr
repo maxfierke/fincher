@@ -6,8 +6,8 @@ module Typhar
     getter source_scanner
 
     def initialize(
-      @plaintext_scanner     : StringScanner,
-      @source_scanner        : StringScanner,
+      @plaintext_scanner     : Typhar::IO,
+      @source_scanner        : Typhar::IO,
       @displacement_strategy : Typhar::DisplacementStrategies::Base,
       @replacement_strategy  : Typhar::ReplacementStrategies::Base
     )
@@ -20,24 +20,26 @@ module Typhar
         # Advance position
         displacer.advance_to_next!(source_scanner)
         
-        plaintext_scanner.string.each_char do |msg_char|
+        plaintext_scanner.each_char do |msg_char|
           # Grab previously unmodified section
-          unmodified = source_scanner.string[current_offset...source_scanner.offset]
+          read_size = source_scanner.pos - current_offset
+          source_scanner.seek(current_offset)
+          unmodified = source_scanner.gets(read_size)
           builder << unmodified
 
           # Replace the next char
           replaced_char = replacer.replace(msg_char)
-          source_scanner.offset += 1
+          source_scanner.skip(1)
           builder << replaced_char
 
           # Record this offset
-          current_offset = source_scanner.offset
+          current_offset = source_scanner.pos
 
           # Advance position
           displacer.advance_to_next!(source_scanner)
         end
 
-        builder << source_scanner.rest
+        builder << source_scanner.gets_to_end
         builder
       end
     end

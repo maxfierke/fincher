@@ -26,16 +26,15 @@ module Typhar
       end
 
       def run
-        source_file = File.read(args.source_text_file)
-        plaintext_scanner = StringScanner.new(args.message)
-        source_scanner = StringScanner.new(source_file)
+        plaintext_scanner = ::IO::Memory.new(args.message)
+        source_file = File.open(args.source_text_file)
         seed = options.seed.empty? ? Random.new_seed : options.seed.to_u32
         offset = options.fixed_offset.to_i
         char_shift = options.char_shift.to_i
 
         transformer = Typhar::Transformer.new(
           plaintext_scanner,
-          source_scanner,
+          source_file,
           Typhar::DisplacementStrategies::NCharOffset.new(plaintext_scanner, seed, offset),
           Typhar::ReplacementStrategies::NShifter.new(seed, char_shift)
         )
