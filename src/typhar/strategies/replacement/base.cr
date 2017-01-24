@@ -6,7 +6,7 @@ module Typhar
       def initialize(@seed : UInt32)
       end
 
-      abstract def replace(to_replace : String | Char | Nil) : String | Char | Nil
+      abstract def replace(to_replace : String | Char) : String | Char
     end
   end
 end

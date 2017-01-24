@@ -6,13 +6,12 @@ module Typhar
       def initialize(@seed : UInt32, @n : Int32)
       end
 
-      def replace(to_replace : String | Char | Nil) : String | Char | Nil
+      def replace(to_replace : String | Char) : String | Char
         case to_replace
         when String
           to_replace.gsub { |c| n_shift(c) }
-        when Char
+        else
           n_shift(to_replace)
-        when Nil
         end
       end
 
