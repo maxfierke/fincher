@@ -12,6 +12,6 @@ targets:
   typhar:
     main: src/cli.cr
 
-crystal: 0.20.4
+crystal: 0.22
 
 license: MIT

@@ -16,9 +16,19 @@ module Typhar
       class Options
         arg "source_text_file", required: true, desc: "source text file"
         arg "message", required: true, desc: "message"
-        string "--seed",         var: "NUMBER", default: "", desc: "seed value. randomly generated if omitted"
-        string "--fixed-offset", var: "NUMBER", default: "30", desc: "character gap between typos"
-        string "--char-shift",   var: "NUMBER", default: "0",  desc: "codepoints to shift"
+        string "--seed",
+               var: "NUMBER",
+               required: false,
+               default: "",
+               desc: "seed value. randomly generated if omitted"
+        string "--fixed-offset",
+               var: "NUMBER",
+               default: "130",
+               desc: "character gap between typos"
+        string "--char-shift",
+               var: "NUMBER",
+               default: "0",
+               desc: "codepoints to shift"
       end
 
       class Help
@@ -28,7 +38,7 @@ module Typhar
       def run
         plaintext_scanner = ::IO::Memory.new(args.message)
         source_file = File.open(args.source_text_file)
-        seed = options.seed.empty? ? Random.new_seed : options.seed.to_u32
+        seed = options.seed.empty? ? generate_seed : options.seed.to_u32
         offset = options.fixed_offset.to_i
         char_shift = options.char_shift.to_i
 
@@ -40,6 +50,10 @@ module Typhar
         )
 
         puts transformer.transform
+      end
+
+      private def generate_seed
+        SecureRandom.hex(4).to_u32(16)
       end
     end
 
