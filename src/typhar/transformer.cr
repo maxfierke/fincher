@@ -19,7 +19,7 @@ module Typhar
       String.build do |builder|
         # Advance position
         displacer.advance_to_next!(source_scanner)
-        
+
         plaintext_scanner.each_char do |msg_char|
           # Grab previously unmodified section
           read_size = source_scanner.pos - current_offset

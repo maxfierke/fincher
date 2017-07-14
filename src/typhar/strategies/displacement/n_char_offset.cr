@@ -10,7 +10,7 @@ module Typhar
         raise StrategyNotFeasibleException.new(
           "Cannot advance #{offset} chars at scanner position #{scanner.pos}"
         ) unless is_feasible?(scanner)
-        
+
         scanner.pos += offset
         scanner
       end
