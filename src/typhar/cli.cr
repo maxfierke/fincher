@@ -58,9 +58,7 @@ module Typhar
           source_file,
           displacement_strategy_for(displacement_strategy, plaintext_scanner, options),
           replacement_strategy_for(replacement_strategy, options)
-        )
-
-        puts transformer.transform
+        ).transform
       end
 
       private def displacement_strategy_for(strategy, plaintext_scanner, options)
