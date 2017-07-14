@@ -31,8 +31,6 @@ module Typhar
           if m
             break
           end
-
-          @last_match = nil
         end
       end
 
@@ -72,10 +70,11 @@ module Typhar
       if m = pattern.match(str)
         @line_offset += m.pre_match.bytesize
         @last_match = m
-        m
       else
-        nil
+        @last_match = nil
       end
+
+      @last_match
     end
   end
 end

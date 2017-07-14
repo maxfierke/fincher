@@ -10,7 +10,7 @@ describe Typhar::DisplacementStrategies::MWordOffset do
         123.to_u32,
         3
       )
-      source_text_scanner = IO::Memory.new("lorem ipsum test blerg smorgasboorg")
+      source_text_scanner = Typhar::IOScanner.new(IO::Memory.new("lorem ipsum test blerg smorgasboorg"))
 
       it "adds the configured offset to the StringScanner#offset" do
         m_word_offsetter.advance_to_next!(source_text_scanner)
@@ -24,7 +24,7 @@ describe Typhar::DisplacementStrategies::MWordOffset do
         123.to_u32,
         10
       )
-      source_text_scanner = IO::Memory.new("lorem")
+      source_text_scanner = Typhar::IOScanner.new(IO::Memory.new("lorem"))
 
       it "raises an exception" do
         expect_raises(Typhar::StrategyNotFeasibleException) do

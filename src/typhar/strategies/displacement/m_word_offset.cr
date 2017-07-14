@@ -15,14 +15,15 @@ module Typhar
           if last_match.nil?
             raise StrategyNotFeasibleException.new(
               "Cannot advance #{offset} words at scanner position #{scanner.pos}"
-            ) unless is_feasible?(scanner)
+            )
           end
         end
         scanner
       end
 
       def is_feasible?(scanner : Typhar::IO)
-        scanner_size(scanner) > scanner.pos + offset
+        # Who knows, it's a stream!
+        true
       end
 
       private def scanner_size(scanner : Typhar::IO)
