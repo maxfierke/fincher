@@ -25,12 +25,7 @@ module Typhar
       end
 
       unless last_match
-        each_line do |line|
-          m = scan_next(pattern, line)
-          if m
-            break
-          end
-        end
+        each_line { |line| break if scan_next(pattern, line) }
       end
 
       @last_match
@@ -38,7 +33,7 @@ module Typhar
 
     def each_line
       io.each_line do |line|
-        @line_start_offset = io.pos - line.size
+        @line_start_offset = io.pos - line.bytesize
         @line_offset = 0
         @line_size = line.size
         yield line
@@ -73,14 +68,14 @@ module Typhar
       stream << "#<IOScanner "
       stream << offset << "/" << size
       if last_match = @last_match
-        stream << " @last_match=\"" << last_match.string << "\" "
+        stream << " @last_match=\"" << last_match.inspect << "\" "
       end
       stream << ">"
     end
 
     private def scan_next(pattern, str)
       if m = pattern.match(str)
-        @line_offset += m.pre_match.bytesize
+        @line_offset += m.string.bytesize - m.post_match.size
         @last_match = m
       else
         @last_match = nil

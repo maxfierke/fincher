@@ -8,7 +8,7 @@ module Typhar
 
       def advance_to_next!(scanner : Typhar::IOScanner) : Typhar::IOScanner
         offset.times do
-          scanner.scan_until(/(\b[\w\-\']+)\b/)
+          scanner.scan_until(/\b[\w\-\']+\b/)
 
           raise StrategyNotFeasibleException.new(
             "Cannot advance #{offset} words at scanner position #{scanner.pos}"
