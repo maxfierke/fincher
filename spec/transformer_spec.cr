@@ -17,8 +17,11 @@ describe Typhar::Transformer do
         Typhar::ReplacementStrategies::NShifter.new(seed, 0)
       )
 
-      transformer.transform.should eq(
-        "I am a test sentenceh The quick brown foxejumps over the lazy log. That dog is lazylas fuck. God damn. Hotta be that be like this man come on son. Why."
+      transformed = IO::Memory.new(source.bytesize)
+      transformer.transform(transformed)
+
+      transformed.to_s.should eq(
+        "I am a test sentenceh The quick brown foe jumps over the lazl dog. That dog is llzy as fuck. God damo. How many dogs there gotta be that be like this man come on son. Why."
       )
     end
   end

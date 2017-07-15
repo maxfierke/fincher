@@ -3,6 +3,7 @@ module Typhar
     @last_match : ::Regex::MatchData?
     @line_offset = 0
     @line_start_offset : Int32 | Int64 = 0
+    @line_size = 0
 
     getter io
     getter last_match
@@ -24,9 +25,7 @@ module Typhar
       end
 
       unless last_match
-        io.each_line do |line|
-          @line_start_offset = io.pos
-          @line_offset = 0
+        each_line do |line|
           m = scan_next(pattern, line)
           if m
             break
@@ -37,14 +36,28 @@ module Typhar
       @last_match
     end
 
+    def each_line
+      io.each_line do |line|
+        @line_start_offset = io.pos - line.size
+        @line_offset = 0
+        @line_size = line.size
+        yield line
+      end
+    end
+
     def offset
       line_start_offset = @line_start_offset
+      line_offset = @line_offset
 
-      if line_start_offset
-        line_start_offset + @line_offset
+      if line_start_offset > 0 || line_offset > 0
+        line_start_offset + line_offset
       else
         io.pos
       end
+    end
+
+    def pos
+      offset
     end
 
     def size
@@ -59,7 +72,6 @@ module Typhar
     def inspect(stream : ::IO)
       stream << "#<IOScanner "
       stream << offset << "/" << size
-      # start = Math.min(Math.max(offset - 2, 0), Math.max(0, @buffer.size - 5))
       if last_match = @last_match
         stream << " @last_match=\"" << last_match.string << "\" "
       end
