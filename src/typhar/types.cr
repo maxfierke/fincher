@@ -1,3 +1,3 @@
 module Typhar
-  alias IO = ::IO::FileDescriptor | ::IO::Memory | IOScanner
+  alias IO = ::IO::FileDescriptor | ::IO::Memory
 end

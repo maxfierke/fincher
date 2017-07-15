@@ -9,7 +9,7 @@ module Typhar
     getter last_match
     forward_missing_to io
 
-    def initialize(@io : ::IO::Memory | ::IO::FileDescriptor)
+    def initialize(@io : Typhar::IO)
     end
 
     def initialize(io : IOScanner)
