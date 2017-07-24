@@ -1,6 +1,7 @@
 module Typhar
   class IOScanner
     @last_match : ::Regex::MatchData?
+    @line = ""
     @line_offset = 0
     @line_start_offset : Int32 | Int64 = 0
     @line_size = 0
@@ -12,32 +13,68 @@ module Typhar
     def initialize(@io : Typhar::IO)
     end
 
-    def initialize(io : IOScanner)
-      @io = io.io
-      @last_match = io.last_match
+    def [](index)
+      @last_match.not_nil![index]
+    end
+
+    def []?(index)
+      @last_match.try(&.[index]?)
+    end
+
+    def eos?
+      io.closed? || offset >= size
+    end
+
+    def peek(*args)
+    end
+
+    def rest
+      io.gets_to_end
+    end
+
+    def string
+      @line
+    end
+
+    def reset
+      @line = ""
+      @line_offset = 0
+      @line_start_offset = 0
+      @line_size = 0
+      @last_match = nil
+      io.rewind
+    end
+
+    def terminate
+      @last_match = nil
+      @line_offset = @line_size
+      io.close
+    end
+
+    def check(pattern)
+      match(pattern, advance: false, options: Regex::Options::ANCHORED)
+    end
+
+    def check_until(pattern)
+      match(pattern, advance: false, options: Regex::Options::None)
+    end
+
+    def skip(pattern : Regex)
+      match = scan(pattern)
+      match.size if match
+    end
+
+    def skip_until(pattern)
+      match = scan_until(pattern)
+      match.size if match
+    end
+
+    def scan(pattern)
+      match(pattern, advance: true, options: Regex::Options::ANCHORED)
     end
 
     def scan_until(pattern)
-      last_match = @last_match
-
-      if last_match
-        last_match = scan_next(pattern, last_match.post_match)
-      end
-
-      unless last_match
-        each_line { |line| break if scan_next(pattern, line) }
-      end
-
-      @last_match
-    end
-
-    def each_line
-      io.each_line do |line|
-        @line_start_offset = io.pos - line.bytesize
-        @line_offset = 0
-        @line_size = line.size
-        yield line
-      end
+      match(pattern, advance: true, options: Regex::Options::None)
     end
 
     def offset
@@ -49,6 +86,11 @@ module Typhar
       else
         io.pos
       end
+    end
+
+    def offset=(position)
+      raise IndexError.new unless position >= 0
+      io.pos = position
     end
 
     def pos
@@ -68,20 +110,51 @@ module Typhar
       stream << "#<IOScanner "
       stream << offset << "/" << size
       if last_match = @last_match
-        stream << " @last_match=\"" << last_match.inspect << "\" "
+        stream << " \"" << last_match[0] << "\" "
       end
       stream << ">"
     end
 
-    private def scan_next(pattern, str)
-      if m = pattern.match(str)
-        @line_offset += m.string.bytesize - m.post_match.size
-        @last_match = m
+    private def match(pattern, advance = true, options = Regex::Options::ANCHORED)
+      last_match = @last_match
+      last_match_str = nil
+
+      if last_match
+        last_match_str = line_match(pattern, advance: true, options: Regex::Options::None)
+      end
+
+      unless last_match
+        each_line(advance) do |line|
+          @line = line
+          last_match_str = line_match(pattern, advance: true, options: Regex::Options::None)
+          break if last_match_str
+        end
+      end
+
+      last_match_str
+    end
+
+    private def line_match(pattern, advance = true, options = Regex::Options::ANCHORED)
+      match = pattern.match_at_byte_index(@line, @line_offset, options)
+      if match
+        start = @line_offset
+        new_byte_offset = match.byte_end(0).to_i
+        @line_offset = new_byte_offset if advance
+
+        @last_match = match
+        @line.byte_slice(start, new_byte_offset - start)
       else
         @last_match = nil
       end
+    end
 
-      @last_match
+    private def each_line(advance = true)
+      io.each_line do |line|
+        @line_start_offset = io.pos - line.bytesize
+        @line_offset = 0
+        @line_size = line.size
+        yield line
+      end
     end
   end
 end
