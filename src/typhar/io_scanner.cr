@@ -4,7 +4,6 @@ module Typhar
     @line = ""
     @line_offset = 0
     @line_start_offset : Int32 | Int64 = 0
-    @line_size = 0
 
     getter io
     getter last_match
@@ -30,7 +29,7 @@ module Typhar
     end
 
     def rest
-      @line[@line_offset, @line_size] + io.gets_to_end
+      rest_of_line + io.gets_to_end
     end
 
     def string
@@ -44,7 +43,7 @@ module Typhar
 
     def terminate
       @last_match = nil
-      @line_offset = @line_size
+      @line_offset = line_size
       io.close
     end
 
@@ -75,11 +74,8 @@ module Typhar
     end
 
     def offset
-      line_start_offset = @line_start_offset
-      line_offset = @line_offset
-
-      if line_start_offset > 0 || line_offset > 0
-        line_start_offset + line_offset
+      if has_offset?
+        @line_start_offset + @line_offset
       else
         io.pos
       end
@@ -118,6 +114,18 @@ module Typhar
       stream << ">"
     end
 
+    private def has_offset?
+      @line_start_offset > 0 || @line_offset > 0
+    end
+
+    private def rest_of_line
+      @line[@line_offset, line_size]
+    end
+
+    private def line_size
+      @line.size
+    end
+
     private def match(pattern, **kwargs)
       last_match = @last_match
       last_match_str = nil
@@ -128,7 +136,6 @@ module Typhar
 
       unless last_match
         each_line do |line|
-          @line = line
           last_match_str = line_match(pattern, **kwargs)
           break if last_match_str
         end
@@ -155,7 +162,7 @@ module Typhar
       io.each_line do |line|
         @line_start_offset = io.pos - line.bytesize
         @line_offset = 0
-        @line_size = line.size
+        @line = line
         yield line
       end
     end
@@ -165,7 +172,6 @@ module Typhar
       @line_start_offset = 0
       @line_offset = 0
       @line = ""
-      @line_size = 0
     end
   end
 end
