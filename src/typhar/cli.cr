@@ -49,16 +49,22 @@ module Typhar
 
       def run
         plaintext_scanner = ::IO::Memory.new(args.message)
-        source_file = File.open(args.source_text_file)
         displacement_strategy = options.displacement_strategy
         replacement_strategy = options.replacement_strategy
 
-        transformer = Typhar::Transformer.new(
-          plaintext_scanner,
-          source_file,
-          displacement_strategy_for(displacement_strategy, plaintext_scanner, options),
-          replacement_strategy_for(replacement_strategy, options)
-        ).transform
+        begin
+          source_file = File.open(args.source_text_file)
+
+          transformer = Typhar::Transformer.new(
+            plaintext_scanner,
+            source_file,
+            displacement_strategy_for(displacement_strategy, plaintext_scanner, options),
+            replacement_strategy_for(replacement_strategy, options)
+          ).transform(STDOUT)
+          puts
+        ensure
+          source_file.close if source_file
+        end
       end
 
       private def displacement_strategy_for(strategy, plaintext_scanner, options)
