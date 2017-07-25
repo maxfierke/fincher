@@ -25,23 +25,20 @@ module Typhar
       io.closed? || offset >= size
     end
 
-    def peek(*args)
+    def peek(len)
+      @line[offset, len]
     end
 
     def rest
-      io.gets_to_end
+      @line[@line_offset, @line_size] + io.gets_to_end
     end
 
     def string
-      @line
+      @line + io.gets_to_end
     end
 
     def reset
-      @line = ""
-      @line_offset = 0
-      @line_start_offset = 0
-      @line_size = 0
-      @last_match = nil
+      reset_line_match!
       io.rewind
     end
 
@@ -90,11 +87,17 @@ module Typhar
 
     def offset=(position)
       raise IndexError.new unless position >= 0
+      reset_line_match!
+      @line_start_offset = position
       io.pos = position
     end
 
     def pos
       offset
+    end
+
+    def pos=(position)
+      self.offset = position
     end
 
     def size
@@ -107,26 +110,26 @@ module Typhar
     end
 
     def inspect(stream : ::IO)
-      stream << "#<IOScanner "
+      stream << "#<Typhar::IOScanner "
       stream << offset << "/" << size
-      if last_match = @last_match
-        stream << " \"" << last_match[0] << "\" "
+      if line = @line
+        stream << " \"" << @line[@line_offset, @line_offset + 5] << "\" "
       end
       stream << ">"
     end
 
-    private def match(pattern, advance = true, options = Regex::Options::ANCHORED)
+    private def match(pattern, **kwargs)
       last_match = @last_match
       last_match_str = nil
 
       if last_match
-        last_match_str = line_match(pattern, advance: true, options: Regex::Options::None)
+        last_match_str = line_match(pattern, **kwargs)
       end
 
       unless last_match
-        each_line(advance) do |line|
+        each_line do |line|
           @line = line
-          last_match_str = line_match(pattern, advance: true, options: Regex::Options::None)
+          last_match_str = line_match(pattern, **kwargs)
           break if last_match_str
         end
       end
@@ -148,13 +151,21 @@ module Typhar
       end
     end
 
-    private def each_line(advance = true)
+    private def each_line
       io.each_line do |line|
         @line_start_offset = io.pos - line.bytesize
         @line_offset = 0
         @line_size = line.size
         yield line
       end
+    end
+
+    private def reset_line_match!
+      @last_match = nil
+      @line_start_offset = 0
+      @line_offset = 0
+      @line = ""
+      @line_size = 0
     end
   end
 end
