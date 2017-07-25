@@ -10,6 +10,7 @@ module Typhar
     forward_missing_to io
 
     def initialize(@io : Typhar::IO)
+      @line = @io.read_line
     end
 
     def [](index)
@@ -74,11 +75,7 @@ module Typhar
     end
 
     def offset
-      if has_offset?
-        @line_start_offset + @line_offset
-      else
-        io.pos
-      end
+      @line_start_offset + @line_offset
     end
 
     def offset=(position)
@@ -108,9 +105,7 @@ module Typhar
     def inspect(stream : ::IO)
       stream << "#<Typhar::IOScanner "
       stream << offset << "/" << size
-      if line = @line
-        stream << " \"" << @line[@line_offset, @line_offset + 5] << "\" "
-      end
+      stream << " \"" << @line.chars.first(5).join("") << "\" "
       stream << ">"
     end
 
@@ -127,14 +122,13 @@ module Typhar
     end
 
     private def match(pattern, **kwargs)
-      last_match = @last_match
       last_match_str = nil
 
-      if last_match
+      if line = @line
         last_match_str = line_match(pattern, **kwargs)
       end
 
-      unless last_match
+      unless last_match_str
         each_line do |line|
           last_match_str = line_match(pattern, **kwargs)
           break if last_match_str
