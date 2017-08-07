@@ -1,6 +1,5 @@
 require "cli"
 require "secure_random"
-require "string_scanner"
 require "./typhar/*"
 
 module Typhar

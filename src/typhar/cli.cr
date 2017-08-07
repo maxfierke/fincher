@@ -13,6 +13,8 @@ module Typhar
     end
 
     class Encode < ::Cli::Command
+      @seed : UInt32?
+
       class Options
         arg "source_text_file", required: true, desc: "source text file"
         arg "message", required: true, desc: "message"
@@ -47,23 +49,23 @@ module Typhar
         caption "encode message"
       end
 
-      def run
+      def run(io = STDOUT)
         plaintext_scanner = ::IO::Memory.new(args.message)
-        source_file = File.open(args.source_text_file)
         displacement_strategy = options.displacement_strategy
         replacement_strategy = options.replacement_strategy
+        source_file = File.open(args.source_text_file)
 
         transformer = Typhar::Transformer.new(
           plaintext_scanner,
           source_file,
           displacement_strategy_for(displacement_strategy, plaintext_scanner, options),
           replacement_strategy_for(replacement_strategy, options)
-        ).transform
+        ).transform(io)
+      ensure
+        source_file.close if source_file
       end
 
       private def displacement_strategy_for(strategy, plaintext_scanner, options)
-        seed = options.seed.empty? ? generate_seed : options.seed.to_u32
-
         case strategy
         when "word-offset"
           word_offset = options.word_offset.to_i
@@ -77,8 +79,6 @@ module Typhar
       end
 
       private def replacement_strategy_for(strategy, options)
-        seed = options.seed.empty? ? generate_seed : options.seed.to_u32
-
         case strategy
         when "n-shifter"
           codepoint_shift = options.codepoint_shift.to_i
@@ -88,8 +88,14 @@ module Typhar
         end
       end
 
+      private def seed
+        @seed ||= options.seed.empty? ? generate_seed : options.seed.to_u32
+      end
+
       private def generate_seed
-        SecureRandom.hex(4).to_u32(16)
+        s = SecureRandom.hex(4).to_u32(16)
+        STDERR.puts "INFO: Using #{s} as seed"
+        s
       end
     end
 

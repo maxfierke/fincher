@@ -13,7 +13,7 @@ module Typhar
     )
     end
 
-    def transform(io : ::IO = STDOUT) : ::IO
+    def transform(io) : ::IO
       current_offset = 0
 
       source_scanner = IOScanner.new(@source_stream)

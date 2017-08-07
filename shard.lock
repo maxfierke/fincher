@@ -2,17 +2,17 @@ version: 1.0
 shards:
   callback:
     github: mosop/callback
-    version: 0.6.2
+    version: 0.6.3
 
   cli:
     github: mosop/cli
-    version: 0.6.9
+    version: 0.6.10
 
   optarg:
     github: mosop/optarg
-    version: 0.5.7
+    version: 0.5.8
 
   string_inflection:
     github: mosop/string_inflection
-    version: 0.2.0
+    version: 0.2.1
 

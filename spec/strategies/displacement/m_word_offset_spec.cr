@@ -14,7 +14,6 @@ describe Typhar::DisplacementStrategies::MWordOffset do
 
       it "adds the configured offset to the StringScanner#offset" do
         m_word_offsetter.advance_to_next!(source_text_scanner)
-        source_text_scanner.last_match.not_nil![0].should eq("test")
         source_text_scanner.offset.should eq(16)
       end
     end
