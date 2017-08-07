@@ -105,7 +105,8 @@ module Typhar
     def inspect(stream : ::IO)
       stream << "#<Typhar::IOScanner "
       stream << offset << "/" << size
-      stream << " \"" << @line.chars.first(5).join("") << "\" "
+      start = Math.min(Math.max(@line_offset - 2, 0), Math.max(0, @line.size - 5))
+      stream << " \"" << @line.byte_slice(start).chars.first(5).join("") << "\" "
       stream << ">"
     end
 
