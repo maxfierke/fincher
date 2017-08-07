@@ -1,3 +1,4 @@
+require "./types/*"
 require "./strategies/*"
 
 module Typhar

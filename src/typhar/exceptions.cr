@@ -4,4 +4,7 @@ module Typhar
 
   class StrategyDoesNotExistException < Exception
   end
+
+  class UnknownKeyError < Exception
+  end
 end

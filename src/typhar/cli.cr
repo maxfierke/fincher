@@ -83,6 +83,9 @@ module Typhar
         when "n-shifter"
           codepoint_shift = options.codepoint_shift.to_i
           Typhar::ReplacementStrategies::NShifter.new(seed, codepoint_shift)
+        when "keymap"
+          keymap_name = "en-US_qwerty"
+          Typhar::ReplacementStrategies::Keymap.new(seed, keymap_name)
         else
           raise StrategyDoesNotExistException.new("'#{strategy}' does not exist.")
         end

@@ -1,0 +1,146 @@
+---
+data:
+  '`':
+    shift: '~'
+    neighbors: ['1']
+  '1':
+    shift: '!'
+    neighbors: ['`', 'q']
+  '2':
+    shift: '@'
+    neighbors: ['1', 'q', '3']
+  '3':
+    shift: '#'
+    neighbors: ['2', 'w', 'e', '4']
+  '4':
+    shift: '$'
+    neighbors: ['3', 'e', 'r', '5']
+  '5':
+    shift: '%'
+    neighbors: ['4', 'r', 't', '6']
+  '6':
+    shift: '^'
+    neighbors: ['5', 't', 'y', '7']
+  '7':
+    shift: '&'
+    neighbors: ['6', 'y', 'u', '8']
+  '8':
+    shift: '*'
+    neighbors: ['7', 'u', 'i', '9']
+  '9':
+    shift: '('
+    neighbors: ['8', 'i', 'o', '0']
+  '0':
+    shift: ')'
+    neighbors: ['9', 'o', 'p', '-']
+  '-':
+    shift: '_'
+    neighbors: ['0', 'p', '[', '=']
+  '=':
+    shift: '+'
+    neighbors: ['-', '[', ']']
+  q:
+    shift: 'Q'
+    neighbors: ['1', '2', 'w', 'a']
+  w:
+    shift: 'W'
+    neighbors: ['q', '2', '3', 'e', 'a', 's']
+  e:
+    shift: 'E'
+    neighbors: ['w', '3', '4', 'r', 'd', 's']
+  r:
+    shift: 'R'
+    neighbors: ['e', '4', '5', 't', 'f', 'd']
+  t:
+    shift: 'T'
+    neighbors: ['r', '5', '6', 'y', 'g', 'f']
+  y:
+    shift: 'Y'
+    neighbors: ['t', '6', '7', 'u', 'h', 'g']
+  u:
+    shift: 'U'
+    neighbors: ['y', '7', '8', 'i', 'j', 'h']
+  i:
+    shift: 'I'
+    neighbors: ['u', '8', '9', 'o', 'k', 'j']
+  o:
+    shift: 'O'
+    neighbors: ['i', '9', '0', 'p', 'l', 'k']
+  p:
+    shift: 'P'
+    neighbors: ['o', '0', '-', '[', ';', 'l']
+  '[':
+    shift: '{'
+    neighbors: ['p', '-', '=', ']', "'", ';']
+  ']':
+    shift: '}'
+    neighbors: ['[', '=', '\', "'"]
+  '\':
+    shift: '|'
+    neighbors: [']']
+  a:
+    shift: 'A'
+    neighbors: ['q', 'w', 's', 'z']
+  s:
+    shift: 'S'
+    neighbors: ['a', 'w', 'e', 'd', 'x', 'z']
+  d:
+    shift: 'D'
+    neighbors: ['s', 'e', 'r', 'f', 'c', 'x']
+  f:
+    shift: 'F'
+    neighbors: ['d', 'r', 't', 'g', 'v', 'c']
+  g:
+    shift: 'G'
+    neighbors: ['f', 't', 'y', 'h', 'b', 'v']
+  h:
+    shift: 'H'
+    neighbors: ['g', 'y', 'u', 'j', 'n', 'b']
+  j:
+    shift: 'J'
+    neighbors: ['h', 'u', 'i', 'k', 'm', 'n']
+  k:
+    shift: 'K'
+    neighbors: ['j', 'i', 'o', 'l', ',', 'm']
+  l:
+    shift: 'L'
+    neighbors: ['k', 'o', 'p', ';', '.', ',']
+  ';':
+    shift: ':'
+    neighbors: ['l', 'p', '[', "'", '/', '.']
+  "'":
+    shift: '"'
+    neighbors: [';', '[', ']', '/']
+  z:
+    shift: 'Z'
+    neighbors: ['a', 's', 'x']
+  x:
+    shift: 'X'
+    neighbors: ['z', 's', 'd', 'c']
+  c:
+    shift: 'C'
+    neighbors: ['x', 'd', 'f', 'v']
+  v:
+    shift: 'V'
+    neighbors: ['c', 'f', 'g', 'b']
+  b:
+    shift: 'B'
+    neighbors: ['v', 'g', 'h', 'n']
+  n:
+    shift: 'N'
+    neighbors: ['b', 'h', 'j', 'm']
+  m:
+    shift: 'M'
+    neighbors: ['n', 'j', 'k', ',']
+  ',':
+    shift: '<'
+    neighbors: ['m', 'k', 'l', '.']
+  '.':
+    shift: '>'
+    neighbors: [',', 'l', ';', '/']
+  '/':
+    shift: '?'
+    neighbors: ['.', ';', "'"]
+  ' ':
+    shift: ' '
+    neighbors: ['x', 'c', 'v', 'b', 'n', 'm', ',']

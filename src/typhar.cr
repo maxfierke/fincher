@@ -1,5 +1,6 @@
 require "cli"
 require "secure_random"
+require "yaml"
 require "./typhar/*"
 
 module Typhar
