@@ -8,8 +8,7 @@ module Typhar
 
       def initialize(@seed : UInt32, @keymap_name : String)
         keymap_yml = File.read("./data/keymaps/#{keymap_name}.yml")
-        @keymap = Typhar::Types::Keymap.from_yaml(keymap_yml).not_nil!
-        @keymap.dereference!
+        @keymap = Typhar::Types::Keymap.from_yaml(keymap_yml)
       end
 
       def replace(to_replace : String | Char) : String | Char

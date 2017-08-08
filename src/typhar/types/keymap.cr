@@ -22,6 +22,10 @@ module Typhar
         end
       end
 
+      def self.from_yaml(*args)
+        super(*args).not_nil!.dereference!
+      end
+
       def dereference!
         data.map do |key, value|
           value.neighbors = value.neighbors.flat_map do |neighbor|
@@ -33,6 +37,8 @@ module Typhar
             end
           end
         end
+
+        self
       end
     end
   end
