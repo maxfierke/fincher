@@ -6,12 +6,14 @@ authors:
 
 dependencies:
   cli:
-    github: mosop/cli
+    github: amberframework/cli
+    version: ~> 0.7.0
+    commit: 2e6cfa453306a6841aa645f73666c2054f5eba74
 
 targets:
   typhar:
     main: src/cli.cr
 
-crystal: 0.23
+crystal: 0.24.1
 
 license: MIT

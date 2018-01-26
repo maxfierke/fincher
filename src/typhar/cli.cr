@@ -96,7 +96,7 @@ module Typhar
       end
 
       private def generate_seed
-        s = SecureRandom.hex(4).to_u32(16)
+        s = Random::Secure.hex(4).to_u32(16)
         STDERR.puts "INFO: Using #{s} as seed"
         s
       end
