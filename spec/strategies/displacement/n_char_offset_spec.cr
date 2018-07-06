@@ -13,7 +13,7 @@ describe Typhar::DisplacementStrategies::NCharOffset do
       source_text_scanner = Typhar::IOScanner.new(IO::Memory.new("lorem ipsum test"))
 
       it "adds the configured offset to the StringScanner#offset" do
-        n_char_offsetter.advance_to_next!(source_text_scanner)
+        n_char_offsetter.advance_to_next!(source_text_scanner, Char::ZERO)
         source_text_scanner.pos = 10
       end
     end
@@ -28,7 +28,7 @@ describe Typhar::DisplacementStrategies::NCharOffset do
 
       it "raises an exception" do
         expect_raises(Typhar::StrategyNotFeasibleException) do
-          n_char_offsetter.advance_to_next!(source_text_scanner)
+          n_char_offsetter.advance_to_next!(source_text_scanner, Char::ZERO)
         end
       end
     end

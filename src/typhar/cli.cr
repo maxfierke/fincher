@@ -26,7 +26,7 @@ module Typhar
         string "--displacement-strategy",
                var: "STRING",
                default: "word-offset",
-               desc: "displacement strategy (Options: char-offset, word-offset)"
+               desc: "displacement strategy (Options: char-offset, word-offset, matching-char-offset)"
         string "--replacement-strategy",
                var: "STRING",
                default: "n-shifter",
@@ -38,7 +38,7 @@ module Typhar
         string "--word-offset",
                var: "NUMBER",
                default: "38",
-               desc: "word gap between typos (Displacement Strategies: word-offset)"
+               desc: "word gap between typos (Displacement Strategies: word-offset, matching-char-offset)"
         string "--codepoint-shift",
                var: "NUMBER",
                default: "7",
@@ -73,6 +73,9 @@ module Typhar
         when "char-offset"
           char_offset = options.char_offset.to_i
           Typhar::DisplacementStrategies::NCharOffset.new(plaintext_scanner, seed, char_offset)
+        when "matching-char-offset"
+          word_offset = options.word_offset.to_i
+          Typhar::DisplacementStrategies::MatchingCharOffset.new(plaintext_scanner, seed, word_offset)
         else
           raise StrategyDoesNotExistException.new("'#{strategy}' does not exist.")
         end
