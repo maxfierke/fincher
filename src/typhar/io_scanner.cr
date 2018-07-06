@@ -96,9 +96,13 @@ module Typhar
     def size
       case _io = io
       when ::IO::FileDescriptor
-        _io.stat.size
+        _io.info.size
       else
-        _io.size
+        if _io.responds_to?(:size)
+          _io.size
+        else
+          raise "Unsupported IO subclass"
+        end
       end
     end
 

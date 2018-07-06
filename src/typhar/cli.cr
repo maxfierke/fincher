@@ -30,7 +30,7 @@ module Typhar
         string "--replacement-strategy",
                var: "STRING",
                default: "n-shifter",
-               desc: "replacement strategy (Options: n-shifter)"
+               desc: "replacement strategy (Options: n-shifter, keymap)"
         string "--char-offset",
                var: "NUMBER",
                default: "130",
@@ -83,6 +83,9 @@ module Typhar
         when "n-shifter"
           codepoint_shift = options.codepoint_shift.to_i
           Typhar::ReplacementStrategies::NShifter.new(seed, codepoint_shift)
+        when "keymap"
+          keymap_name = "en-US_qwerty"
+          Typhar::ReplacementStrategies::Keymap.new(seed, keymap_name)
         else
           raise StrategyDoesNotExistException.new("'#{strategy}' does not exist.")
         end
@@ -93,7 +96,7 @@ module Typhar
       end
 
       private def generate_seed
-        s = SecureRandom.hex(4).to_u32(16)
+        s = Random::Secure.hex(4).to_u32(16)
         STDERR.puts "INFO: Using #{s} as seed"
         s
       end
