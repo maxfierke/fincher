@@ -96,7 +96,7 @@ module Typhar
     def size
       case _io = io
       when ::IO::FileDescriptor
-        _io.stat.size
+        _io.info.size
       else
         if _io.responds_to?(:size)
           _io.size

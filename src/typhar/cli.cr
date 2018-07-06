@@ -30,7 +30,7 @@ module Typhar
         string "--replacement-strategy",
                var: "STRING",
                default: "n-shifter",
-               desc: "replacement strategy (Options: n-shifter)"
+               desc: "replacement strategy (Options: n-shifter, keymap)"
         string "--char-offset",
                var: "NUMBER",
                default: "130",

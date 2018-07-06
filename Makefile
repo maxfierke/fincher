@@ -1,4 +1,5 @@
 CRYSTAL_BIN ?= $(shell which crystal)
+SHARDS_BIN  ?= $(shell which shards)
 TYPHAR_BIN  ?= $(shell which typhar)
 PREFIX      ?= /usr/local
 
@@ -7,7 +8,7 @@ build: deps
 	mkdir -p bin
 	$(CRYSTAL_BIN) build --debug -o bin/typhar src/cli.cr $(CRFLAGS)
 deps:
-	$(CRYSTAL_BIN) deps check || $(CRYSTAL_BIN) deps install
+	$(SHARDS_BIN) check || $(SHARDS_BIN) install
 clean:
 	rm -f ./bin/typhar
 test: build
