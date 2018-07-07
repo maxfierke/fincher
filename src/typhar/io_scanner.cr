@@ -84,6 +84,7 @@ module Typhar
       raise IndexError.new unless position >= 0
       @buffer_io_offset = position
       io.pos = position
+      @eof_reached = false
       next_buffer!
     end
 
@@ -172,6 +173,7 @@ module Typhar
 
     private def reset_buffer_match!
       @last_match = nil
+      @eof_reached = false
       @buffer_io_offset = 0
       @buffer_cursor = 0
       @buffer = ""
