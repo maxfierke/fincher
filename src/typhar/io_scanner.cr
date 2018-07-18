@@ -1,16 +1,18 @@
 module Typhar
   class IOScanner
+    BUFFER_SIZE = 4096
+
     @last_match : ::Regex::MatchData?
-    @line = ""
-    @line_offset = 0
-    @line_start_offset : Int32 | Int64 = 0
+    @buffer = ""
+    @buffer_cursor = 0
+    @buffer_io_offset : Int32 | Int64 = 0
+    @eof_reached = false
 
     getter io
     getter last_match
     forward_missing_to io
 
     def initialize(@io : Typhar::IO)
-      @line = @io.read_line
     end
 
     def [](index)
@@ -22,29 +24,29 @@ module Typhar
     end
 
     def eos?
-      io.closed? || offset >= size
+      offset >= size
     end
 
     def peek(len)
-      @line[offset, len]
+      buffer[offset, len]
     end
 
     def rest
-      rest_of_line + io.gets_to_end
+      rest_of_buffer + io.gets_to_end
     end
 
     def string
-      @line + io.gets_to_end
+      @buffer + io.gets_to_end
     end
 
     def reset
-      reset_line_match!
+      reset_buffer_match!
       io.rewind
     end
 
     def terminate
       @last_match = nil
-      @line_offset = line_size
+      @buffer_cursor = buffer_size
       io.close
     end
 
@@ -75,14 +77,15 @@ module Typhar
     end
 
     def offset
-      @line_start_offset + @line_offset
+      @buffer_io_offset + @buffer_cursor
     end
 
     def offset=(position)
       raise IndexError.new unless position >= 0
-      reset_line_match!
-      @line_start_offset = position
+      @buffer_io_offset = position
       io.pos = position
+      @eof_reached = false
+      next_buffer!
     end
 
     def pos
@@ -109,33 +112,37 @@ module Typhar
     def inspect(stream : ::IO)
       stream << "#<Typhar::IOScanner "
       stream << offset << "/" << size
-      start = Math.min(Math.max(@line_offset - 2, 0), Math.max(0, @line.size - 5))
-      stream << " \"" << @line.byte_slice(start).chars.first(5).join("") << "\" "
+      start = Math.min(Math.max(@buffer_cursor - 2, 0), Math.max(0, @buffer.size - 5))
+      stream << " \"" << buffer.byte_slice(start).chars.first(5).join("") << "\" "
       stream << ">"
     end
 
-    private def has_offset?
-      @line_start_offset > 0 || @line_offset > 0
+    private def buffer
+      if @buffer.empty?
+        next_buffer!
+      else
+        @buffer
+      end
     end
 
-    private def rest_of_line
-      @line[@line_offset, line_size]
+    private def rest_of_buffer
+      @buffer[@buffer_cursor, buffer_size]
     end
 
-    private def line_size
-      @line.size
+    private def buffer_size
+      @buffer.bytesize
     end
 
     private def match(pattern, **kwargs)
       last_match_str = nil
 
-      if line = @line
-        last_match_str = line_match(pattern, **kwargs)
+      if buffer = @buffer
+        last_match_str = buffer_match(pattern, **kwargs)
       end
 
       unless last_match_str
-        each_line do |line|
-          last_match_str = line_match(pattern, **kwargs)
+        each_buffer do |buffer|
+          last_match_str = buffer_match(pattern, **kwargs)
           break if last_match_str
         end
       end
@@ -143,34 +150,54 @@ module Typhar
       last_match_str
     end
 
-    private def line_match(pattern, advance = true, options = Regex::Options::ANCHORED)
-      match = pattern.match_at_byte_index(@line, @line_offset, options)
+    private def buffer_match(pattern, advance = true, options = Regex::Options::ANCHORED)
+      match = pattern.match_at_byte_index(@buffer, @buffer_cursor, options)
       if match
-        start = @line_offset
+        start = @buffer_cursor
         new_byte_offset = match.byte_end(0).to_i
-        @line_offset = new_byte_offset if advance
+        @buffer_cursor = new_byte_offset if advance
 
         @last_match = match
-        @line.byte_slice(start, new_byte_offset - start)
+        @buffer.byte_slice(start, new_byte_offset - start)
       else
         @last_match = nil
       end
     end
 
-    private def each_line
-      io.each_line do |line|
-        @line_start_offset = io.pos - line.bytesize
-        @line_offset = 0
-        @line = line
-        yield line
+    private def each_buffer
+      while !io_eof?
+        buf = next_buffer!
+        yield buf
       end
     end
 
-    private def reset_line_match!
+    private def reset_buffer_match!
       @last_match = nil
-      @line_start_offset = 0
-      @line_offset = 0
-      @line = ""
+      @eof_reached = false
+      @buffer_io_offset = 0
+      @buffer_cursor = 0
+      @buffer = ""
+    end
+
+    private def next_buffer!
+      before_offset = offset
+
+      begin
+        buf = io.read_string(BUFFER_SIZE)
+      rescue ::IO::EOFError
+        io.pos = before_offset
+        buf = io.gets_to_end
+        @eof_reached = true
+      end
+
+      @buffer_io_offset = io.pos - buf.bytesize
+      @buffer_cursor = 0
+      @buffer = buf
+      buf
+    end
+
+    private def io_eof?
+      @eof_reached || io.closed?
     end
   end
 end
