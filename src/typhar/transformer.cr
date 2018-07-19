@@ -21,7 +21,7 @@ module Typhar
 
       plaintext_scanner.each_char do |msg_char|
         # Advance position
-        displacer.advance_to_next!(source_scanner)
+        displacer.advance_to_next!(source_scanner, msg_char)
 
         # Grab previously unmodified section
         read_size = source_scanner.offset - current_offset

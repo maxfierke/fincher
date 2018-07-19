@@ -1,6 +1,6 @@
 module Typhar
   module DisplacementStrategies
-    class MWordOffset < Base
+    class MatchingCharOffset < Base
       getter offset
 
       def initialize(@plaintext_scanner : Typhar::IO, @seed : UInt32, @offset : Int32)
@@ -11,9 +11,11 @@ module Typhar
           scanner.scan_until(/\b[\w\-\']+\b\W+\b/im)
 
           raise StrategyNotFeasibleException.new(
-            "Cannot advance #{offset} words at scanner position #{scanner.pos}"
+            "Cannot advance #{offset} words for character '#{msg_char}' at scanner position #{scanner.pos}"
           ) unless is_feasible?(scanner)
         end
+        scanner.skip_until(/#{msg_char}/i)
+        scanner.offset = scanner.offset - 1
         scanner
       end
 

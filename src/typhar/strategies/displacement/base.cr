@@ -7,7 +7,7 @@ module Typhar
       def initialize(@plaintext_scanner : Typhar::IO, @seed : UInt32)
       end
 
-      abstract def advance_to_next!(scanner : Typhar::IOScanner) : Typhar::IOScanner
+      abstract def advance_to_next!(scanner : Typhar::IOScanner, msg_char : Char) : Typhar::IOScanner
 
       abstract def is_feasible?(scanner : Typhar::IOScanner)
     end

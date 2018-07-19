@@ -81,11 +81,11 @@ module Typhar
     end
 
     def offset=(position)
-      raise IndexError.new unless position >= 0
+      raise IndexError.new if position < 0 || position >= size
       @buffer_io_offset = position
       io.pos = position
       @eof_reached = false
-      next_buffer!
+      next_buffer!(position)
     end
 
     def pos
@@ -179,8 +179,8 @@ module Typhar
       @buffer = ""
     end
 
-    private def next_buffer!
-      before_offset = offset
+    private def next_buffer!(anchor_position = nil)
+      before_offset = anchor_position || offset
 
       begin
         buf = io.read_string(BUFFER_SIZE)
