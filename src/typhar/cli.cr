@@ -61,6 +61,8 @@ module Typhar
           displacement_strategy_for(displacement_strategy, plaintext_scanner, options),
           replacement_strategy_for(replacement_strategy, options)
         ).transform(io)
+      rescue e : StrategyDoesNotExistException
+        Typhar.error e.message
       ensure
         source_file.close if source_file
       end
@@ -77,7 +79,9 @@ module Typhar
           word_offset = options.word_offset.to_i
           Typhar::DisplacementStrategies::MatchingCharOffset.new(plaintext_scanner, seed, word_offset)
         else
-          raise StrategyDoesNotExistException.new("'#{strategy}' does not exist.")
+          raise StrategyDoesNotExistException.new(
+            "Displacement strategy '#{strategy}' does not exist."
+          )
         end
       end
 
@@ -90,7 +94,9 @@ module Typhar
           keymap_name = "en-US_qwerty"
           Typhar::ReplacementStrategies::Keymap.new(seed, keymap_name)
         else
-          raise StrategyDoesNotExistException.new("'#{strategy}' does not exist.")
+          raise StrategyDoesNotExistException.new(
+            "Replacement strategy '#{strategy}' does not exist."
+          )
         end
       end
 
@@ -100,7 +106,7 @@ module Typhar
 
       private def generate_seed
         s = Random::Secure.hex(4).to_u32(16)
-        STDERR.puts "INFO: Using #{s} as seed"
+        Typhar.info "Using #{s} as seed"
         s
       end
     end
