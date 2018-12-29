@@ -22,6 +22,20 @@ module Fincher
         end
       end
 
+      def self.load!(keymap_name)
+        keymap_file = Fincher::EmbeddedFs.get?("keymaps/#{keymap_name}.yml")
+
+        if keymap_file
+          keymap_yml = keymap_file.gets_to_end
+          from_yaml(keymap_yml)
+        else
+          raise UnknownKeymapError.new(
+            "Keymap '#{keymap_name}' does not exist. Are you able to define it?\
+            Please open a PR on https://github.com/maxfierke/fincher"
+          )
+        end
+      end
+
       def self.from_yaml(*args)
         super(*args).not_nil!.dereference!
       end

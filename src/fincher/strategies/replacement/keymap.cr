@@ -1,14 +1,9 @@
 module Fincher
   module ReplacementStrategies
     class Keymap < Base
-      @keymap : Fincher::Types::Keymap
-
-      getter keymap_name
       getter keymap
 
-      def initialize(@seed : UInt32, @keymap_name : String)
-        keymap_yml = File.read("./data/keymaps/#{keymap_name}.yml")
-        @keymap = Fincher::Types::Keymap.from_yaml(keymap_yml)
+      def initialize(@seed : UInt32, @keymap : Fincher::Types::Keymap)
       end
 
       def replace(to_replace : String | Char) : String | Char

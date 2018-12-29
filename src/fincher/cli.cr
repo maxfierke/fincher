@@ -43,6 +43,10 @@ module Fincher
                var: "NUMBER",
                default: "7",
                desc: "codepoints to shift (Replacement Strategies: n-shifter)"
+        string "--keymap",
+               var: "STRING",
+               default: "en-US_qwerty",
+               desc: "Keymap definition to use for keymap replacement strategy"
       end
 
       class Help
@@ -61,7 +65,7 @@ module Fincher
           displacement_strategy_for(displacement_strategy, plaintext_scanner, options),
           replacement_strategy_for(replacement_strategy, options)
         ).transform(io)
-      rescue e : StrategyDoesNotExistException
+      rescue e : ::Fincher::Error
         Fincher.error e.message
       ensure
         source_file.close if source_file
@@ -79,7 +83,7 @@ module Fincher
           word_offset = options.word_offset.to_i
           Fincher::DisplacementStrategies::MatchingCharOffset.new(plaintext_scanner, seed, word_offset)
         else
-          raise StrategyDoesNotExistException.new(
+          raise StrategyDoesNotExistError.new(
             "Displacement strategy '#{strategy}' does not exist."
           )
         end
@@ -91,10 +95,11 @@ module Fincher
           codepoint_shift = options.codepoint_shift.to_i
           Fincher::ReplacementStrategies::NShifter.new(seed, codepoint_shift)
         when "keymap"
-          keymap_name = "en-US_qwerty"
-          Fincher::ReplacementStrategies::Keymap.new(seed, keymap_name)
+          keymap_name = options.keymap
+          keymap = Fincher::Types::Keymap.load!(keymap_name)
+          Fincher::ReplacementStrategies::Keymap.new(seed, keymap)
         else
-          raise StrategyDoesNotExistException.new(
+          raise StrategyDoesNotExistError.new(
             "Replacement strategy '#{strategy}' does not exist."
           )
         end

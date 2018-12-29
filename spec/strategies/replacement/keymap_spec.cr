@@ -4,7 +4,8 @@ describe Fincher::ReplacementStrategies::Keymap do
   describe "#replace!" do
     describe "when given a char" do
       it "replaces char with a neighboring char based on keymap" do
-        keymap_replacer = Fincher::ReplacementStrategies::Keymap.new(8.to_u32, "en-US_qwerty")
+        keymap = Fincher::Types::Keymap.load!("en-US_qwerty")
+        keymap_replacer = Fincher::ReplacementStrategies::Keymap.new(8.to_u32, keymap)
         to_replace = 'b'
         replaced = keymap_replacer.replace(to_replace)
 
@@ -14,7 +15,8 @@ describe Fincher::ReplacementStrategies::Keymap do
 
     describe "when given a string" do
       it "replaces each char in the string with a neighboring char based on keymap" do
-        keymap_replacer = Fincher::ReplacementStrategies::Keymap.new(8.to_u32, "en-US_qwerty")
+        keymap = Fincher::Types::Keymap.load!("en-US_qwerty")
+        keymap_replacer = Fincher::ReplacementStrategies::Keymap.new(8.to_u32, keymap)
         to_replace = "bbbbb"
         replaced = keymap_replacer.replace(to_replace)
 

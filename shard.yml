@@ -5,6 +5,9 @@ authors:
   - Max Fierke <max@maxfierke.com>
 
 dependencies:
+  baked_file_system:
+    github: schovi/baked_file_system
+    version: ~> 0.9.8
   cli:
     github: mosop/cli
     version: ~> 0.7.0

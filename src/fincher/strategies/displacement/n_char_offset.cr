@@ -7,7 +7,7 @@ module Fincher
       end
 
       def advance_to_next!(scanner : Fincher::IOScanner, msg_char : Char) : Fincher::IOScanner
-        raise StrategyNotFeasibleException.new(
+        raise StrategyNotFeasibleError.new(
           "Cannot advance #{offset} chars at scanner position #{scanner.pos}"
         ) unless is_feasible?(scanner)
 
