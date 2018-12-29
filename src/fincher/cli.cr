@@ -25,11 +25,11 @@ module Fincher
                desc: "seed value. randomly generated if omitted"
         string "--displacement-strategy",
                var: "STRING",
-               default: "word-offset",
+               default: "matching-char-offset",
                desc: "displacement strategy (Options: char-offset, word-offset, matching-char-offset)"
         string "--replacement-strategy",
                var: "STRING",
-               default: "n-shifter",
+               default: "keymap",
                desc: "replacement strategy (Options: n-shifter, keymap)"
         string "--char-offset",
                var: "NUMBER",
