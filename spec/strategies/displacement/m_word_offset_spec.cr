@@ -1,16 +1,16 @@
 require "../../spec_helper"
 
-describe Typhar::DisplacementStrategies::MWordOffset do
+describe Fincher::DisplacementStrategies::MWordOffset do
   describe "#advance_to_next!" do
     scanner = IO::Memory.new("hello")
 
     describe "when the displacement is feasible" do
-      m_word_offsetter = Typhar::DisplacementStrategies::MWordOffset.new(
+      m_word_offsetter = Fincher::DisplacementStrategies::MWordOffset.new(
         scanner,
         123,
         3
       )
-      source_text_scanner = Typhar::IOScanner.new(IO::Memory.new("lorem ipsum test blerg smorgasboorg"))
+      source_text_scanner = Fincher::IOScanner.new(IO::Memory.new("lorem ipsum test blerg smorgasboorg"))
 
       it "adds the configured offset to the StringScanner#offset" do
         m_word_offsetter.advance_to_next!(source_text_scanner, Char::ZERO)
@@ -19,15 +19,15 @@ describe Typhar::DisplacementStrategies::MWordOffset do
     end
 
     describe "when the displacement is not feasible" do
-      m_word_offsetter = Typhar::DisplacementStrategies::MWordOffset.new(
+      m_word_offsetter = Fincher::DisplacementStrategies::MWordOffset.new(
         scanner,
         123,
         10
       )
-      source_text_scanner = Typhar::IOScanner.new(IO::Memory.new("lorem"))
+      source_text_scanner = Fincher::IOScanner.new(IO::Memory.new("lorem"))
 
       it "raises an exception" do
-        expect_raises(Typhar::StrategyNotFeasibleException) do
+        expect_raises(Fincher::StrategyNotFeasibleException) do
           m_word_offsetter.advance_to_next!(source_text_scanner, Char::ZERO)
         end
       end

@@ -1,4 +1,4 @@
-module Typhar
+module Fincher
   module ReplacementStrategies
     class NShifter < Base
       getter n

@@ -1,4 +1,4 @@
-name: typhar
+name: fincher
 version: 0.1.0
 
 authors:
@@ -10,7 +10,7 @@ dependencies:
     version: ~> 0.7.0
 
 targets:
-  typhar:
+  fincher:
     main: src/cli.cr
 
 crystal: 0.25.1

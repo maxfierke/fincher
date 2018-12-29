@@ -1,2 +1,2 @@
 require "spec"
-require "../src/typhar"
+require "../src/fincher"

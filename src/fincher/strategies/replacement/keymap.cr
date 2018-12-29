@@ -1,14 +1,14 @@
-module Typhar
+module Fincher
   module ReplacementStrategies
     class Keymap < Base
-      @keymap : Typhar::Types::Keymap
+      @keymap : Fincher::Types::Keymap
 
       getter keymap_name
       getter keymap
 
       def initialize(@seed : UInt32, @keymap_name : String)
         keymap_yml = File.read("./data/keymaps/#{keymap_name}.yml")
-        @keymap = Typhar::Types::Keymap.from_yaml(keymap_yml)
+        @keymap = Fincher::Types::Keymap.from_yaml(keymap_yml)
       end
 
       def replace(to_replace : String | Char) : String | Char

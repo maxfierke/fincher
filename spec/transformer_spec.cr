@@ -1,6 +1,6 @@
 require "./spec_helper"
 
-describe Typhar::Transformer do
+describe Fincher::Transformer do
   describe "#transform" do
     it "does stuff" do
       source = "I am a test sentence. The quick brown fox jumps over the lazy dog. That dog is lazy as fuck. God damn. How many dogs there gotta be that be like this man come on son. Why."
@@ -10,11 +10,11 @@ describe Typhar::Transformer do
       plaintext_scanner = IO::Memory.new(plaintext)
       seed = 123.to_u32
 
-      transformer = Typhar::Transformer.new(
+      transformer = Fincher::Transformer.new(
         plaintext_scanner,
         source_scanner,
-        Typhar::DisplacementStrategies::NCharOffset.new(plaintext_scanner, seed, 20),
-        Typhar::ReplacementStrategies::NShifter.new(seed, 0)
+        Fincher::DisplacementStrategies::NCharOffset.new(plaintext_scanner, seed, 20),
+        Fincher::ReplacementStrategies::NShifter.new(seed, 0)
       )
 
       transformed = IO::Memory.new(source.bytesize)

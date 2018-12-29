@@ -1,12 +1,12 @@
-module Typhar
+module Fincher
   module DisplacementStrategies
     class NCharOffset < Base
       getter offset
 
-      def initialize(@plaintext_scanner : Typhar::IO, @seed : UInt32, @offset : Int32)
+      def initialize(@plaintext_scanner : Fincher::IO, @seed : UInt32, @offset : Int32)
       end
 
-      def advance_to_next!(scanner : Typhar::IOScanner, msg_char : Char) : Typhar::IOScanner
+      def advance_to_next!(scanner : Fincher::IOScanner, msg_char : Char) : Fincher::IOScanner
         raise StrategyNotFeasibleException.new(
           "Cannot advance #{offset} chars at scanner position #{scanner.pos}"
         ) unless is_feasible?(scanner)
@@ -15,7 +15,7 @@ module Typhar
         scanner
       end
 
-      def is_feasible?(scanner : Typhar::IOScanner)
+      def is_feasible?(scanner : Fincher::IOScanner)
         scanner.size > scanner.pos + offset
       end
     end

@@ -1,16 +1,16 @@
 require "./types/*"
 require "./strategies/*"
 
-module Typhar
+module Fincher
   class Transformer
     getter plaintext_scanner
     getter source_scanner
 
     def initialize(
-      @plaintext_scanner     : Typhar::IO,
-      @source_stream         : Typhar::IO,
-      @displacement_strategy : Typhar::DisplacementStrategies::Base,
-      @replacement_strategy  : Typhar::ReplacementStrategies::Base
+      @plaintext_scanner     : Fincher::IO,
+      @source_stream         : Fincher::IO,
+      @displacement_strategy : Fincher::DisplacementStrategies::Base,
+      @replacement_strategy  : Fincher::ReplacementStrategies::Base
     )
     end
 

@@ -1,7 +1,7 @@
-module Typhar
+module Fincher
   class CLI < ::Cli::Supercommand
-    version Typhar::VERSION
-    command_name "typhar"
+    version Fincher::VERSION
+    command_name "fincher"
 
     class Options
       help
@@ -55,14 +55,14 @@ module Typhar
         replacement_strategy = options.replacement_strategy
         source_file = File.open(args.source_text_file)
 
-        transformer = Typhar::Transformer.new(
+        transformer = Fincher::Transformer.new(
           plaintext_scanner,
           source_file,
           displacement_strategy_for(displacement_strategy, plaintext_scanner, options),
           replacement_strategy_for(replacement_strategy, options)
         ).transform(io)
       rescue e : StrategyDoesNotExistException
-        Typhar.error e.message
+        Fincher.error e.message
       ensure
         source_file.close if source_file
       end
@@ -71,13 +71,13 @@ module Typhar
         case strategy
         when "word-offset"
           word_offset = options.word_offset.to_i
-          Typhar::DisplacementStrategies::MWordOffset.new(plaintext_scanner, seed, word_offset)
+          Fincher::DisplacementStrategies::MWordOffset.new(plaintext_scanner, seed, word_offset)
         when "char-offset"
           char_offset = options.char_offset.to_i
-          Typhar::DisplacementStrategies::NCharOffset.new(plaintext_scanner, seed, char_offset)
+          Fincher::DisplacementStrategies::NCharOffset.new(plaintext_scanner, seed, char_offset)
         when "matching-char-offset"
           word_offset = options.word_offset.to_i
-          Typhar::DisplacementStrategies::MatchingCharOffset.new(plaintext_scanner, seed, word_offset)
+          Fincher::DisplacementStrategies::MatchingCharOffset.new(plaintext_scanner, seed, word_offset)
         else
           raise StrategyDoesNotExistException.new(
             "Displacement strategy '#{strategy}' does not exist."
@@ -89,10 +89,10 @@ module Typhar
         case strategy
         when "n-shifter"
           codepoint_shift = options.codepoint_shift.to_i
-          Typhar::ReplacementStrategies::NShifter.new(seed, codepoint_shift)
+          Fincher::ReplacementStrategies::NShifter.new(seed, codepoint_shift)
         when "keymap"
           keymap_name = "en-US_qwerty"
-          Typhar::ReplacementStrategies::Keymap.new(seed, keymap_name)
+          Fincher::ReplacementStrategies::Keymap.new(seed, keymap_name)
         else
           raise StrategyDoesNotExistException.new(
             "Replacement strategy '#{strategy}' does not exist."
@@ -106,7 +106,7 @@ module Typhar
 
       private def generate_seed
         s = Random::Secure.hex(4).to_u32(16)
-        Typhar.info "Using #{s} as seed"
+        Fincher.info "Using #{s} as seed"
         s
       end
     end
@@ -117,7 +117,7 @@ module Typhar
       end
 
       def run
-        puts "Typhar #{version}"
+        puts "Fincher #{version}"
       end
     end
   end
