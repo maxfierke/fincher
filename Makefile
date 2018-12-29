@@ -2,25 +2,43 @@ CRYSTAL_BIN ?= $(shell which crystal)
 SHARDS_BIN  ?= $(shell which shards)
 FINCHER_BIN ?= $(shell which fincher)
 PREFIX      ?= /usr/local
+RELEASE     ?=
+STATIC      ?=
 SOURCES      = src/*.cr src/**/*.cr
 
+override CRFLAGS += $(if $(RELEASE),--release,--debug)$(if $(STATIC),--static )$(if $(LDFLAGS),--link-flags="$(LDFLAGS)" )
+
+.PHONY: all
 all: build
-build: deps $(SOURCES)
+
+bin/fincher: deps $(SOURCES)
 	mkdir -p bin
-	$(CRYSTAL_BIN) build --debug -o bin/fincher src/cli.cr $(CRFLAGS)
-release: deps $(SOURCES)
-	mkdir -p dist
-	$(CRYSTAL_BIN) build --release -o dist/fincher src/cli.cr $(CRFLAGS)
+	$(CRYSTAL_BIN) build -o bin/fincher src/cli.cr $(CRFLAGS)
+
+.PHONY: build
+build: bin/fincher
+
+.PHONY: deps
 deps:
 	$(SHARDS_BIN) check || $(SHARDS_BIN) install
+
+.PHONY: clean
 clean:
 	rm -f ./bin/fincher*
 	rm -rf ./dist
-test: build
+
+.PHONY: test
+test: deps $(SOURCES)
 	$(CRYSTAL_BIN) spec
+
+.PHONY: spec
 spec: test
-install: build
+
+.PHONY: install
+install: bin/fincher
 	mkdir -p $(PREFIX)/bin
 	cp ./bin/fincher $(PREFIX)/bin
-reinstall: build
+
+.PHONY: reinstall
+reinstall: bin/fincher
 	cp ./bin/fincher $(FINCHER_BIN) -rf
