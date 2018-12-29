@@ -10,7 +10,7 @@ module Fincher
         offset.times do
           scanner.scan_until(/\b[\w\-\']+\b\W+\b/im)
 
-          raise StrategyNotFeasibleException.new(
+          raise StrategyNotFeasibleError.new(
             "Cannot advance #{offset} words for character '#{msg_char}' at scanner position #{scanner.pos}"
           ) unless is_feasible?(scanner)
         end

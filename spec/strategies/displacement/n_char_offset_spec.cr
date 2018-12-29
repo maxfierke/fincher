@@ -27,7 +27,7 @@ describe Fincher::DisplacementStrategies::NCharOffset do
       source_text_scanner = Fincher::IOScanner.new(IO::Memory.new("lorem"))
 
       it "raises an exception" do
-        expect_raises(Fincher::StrategyNotFeasibleException) do
+        expect_raises(Fincher::StrategyNotFeasibleError) do
           n_char_offsetter.advance_to_next!(source_text_scanner, Char::ZERO)
         end
       end
