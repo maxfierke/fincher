@@ -1,4 +1,4 @@
-# typhar
+# fincher
 
 TODO: Write a description here
 
@@ -16,7 +16,7 @@ TODO: Write development instructions here
 
 ## Contributing
 
-1. Fork it ( https://github.com/maxfierke/typhar/fork )
+1. Fork it ( https://github.com/maxfierke/fincher/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)

@@ -1,7 +1,7 @@
 require "./displacement/*"
 require "./replacement/*"
 
-module Typhar
+module Fincher
   module DisplacementStrategies
   end
 

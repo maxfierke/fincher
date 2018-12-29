@@ -1,4 +1,4 @@
-module Typhar
+module Fincher
   class StrategyNotFeasibleException < Exception
   end
 

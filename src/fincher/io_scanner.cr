@@ -1,4 +1,4 @@
-module Typhar
+module Fincher
   class IOScanner
     BUFFER_SIZE = 4096
 
@@ -12,7 +12,7 @@ module Typhar
     getter last_match
     forward_missing_to io
 
-    def initialize(@io : Typhar::IO)
+    def initialize(@io : Fincher::IO)
     end
 
     def [](index)
@@ -110,7 +110,7 @@ module Typhar
     end
 
     def inspect(stream : ::IO)
-      stream << "#<Typhar::IOScanner "
+      stream << "#<Fincher::IOScanner "
       stream << offset << "/" << size
       start = Math.min(Math.max(@buffer_cursor - 2, 0), Math.max(0, @buffer.size - 5))
       stream << " \"" << buffer.byte_slice(start).chars.first(5).join("") << "\" "

@@ -1,4 +1,4 @@
-module Typhar
+module Fincher
   module Types
     class KeymapEntry
       YAML.mapping(

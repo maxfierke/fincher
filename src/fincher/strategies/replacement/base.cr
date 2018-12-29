@@ -1,4 +1,4 @@
-module Typhar
+module Fincher
   module ReplacementStrategies
     abstract class Base
       getter seed

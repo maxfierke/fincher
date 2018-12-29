@@ -1,5 +1,5 @@
 require "./spec_helper"
 
-describe Typhar do
+describe Fincher do
 
 end

@@ -1,5 +1,5 @@
-require "./typhar"
+require "./fincher"
 
 Colorize.on_tty_only!
-Typhar.debug = true
-Typhar::CLI.run ARGV
+Fincher.debug = true
+Fincher::CLI.run ARGV

@@ -2,9 +2,9 @@ require "colorize"
 require "cli"
 require "random/secure"
 require "yaml"
-require "./typhar/*"
+require "./fincher/*"
 
-module Typhar
+module Fincher
   @@debug = false
 
   def self.debug=(value)
