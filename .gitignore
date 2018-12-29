@@ -1,5 +1,6 @@
 /doc/
 /lib/
 /bin/
+/dist/
 /.shards/
 /test_files/
