@@ -163,6 +163,22 @@ For example, the `keymap` replacement strategy will (pseudo)randomly decide
 which character to use to replace a character in the source text based on the
 characters close to a message character on the keyboard.
 
+## Limitations
+
+`fincher` is early stages and has some notable limitations:
+
+* The current displacement and replacement strategies are not context-aware.
+  i.e. they do not make judgements based on the content of the source text and
+  whether the replacement or displacement makes sense grammatically. This will
+  probably change.
+* Source text scanning (rightly or wrongly) happens on a rotating
+  4K buffer (so you could feed it multi-GB source text, if you wanted to) and
+  the `IOScanner` does not handle regex matching across buffer boundaries.
+  Therefore, the `--[word|char]-offset` parameters are not applied exactly, but
+  will make minimum guarantees about the offset.
+* Does not yet take input from `STDIN`, so it cannot be piped to yet. (It does
+  however, output to `STDOUT`.)
+
 ## Development
 
 To work on `fincher`, you'll need a current version of the Crystal compiler. I
