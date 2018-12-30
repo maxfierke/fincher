@@ -28,14 +28,10 @@ encrypting the source message.
 
 ## Installation
 
-Download a pre-compiled release from [Releases](https://github.com/maxfierke/fincher/releases) or compile it locally:
-
-### Compiling
-
 1. Ensure you have the [crystal compiler installed](https://crystal-lang.org/docs/installation/) (0.25.1+)
 2. Clone this repo
-3. Run `make release` to build for release mode
-4. Grab `fincher` from the `dist` directory for your system
+3. Run `make install RELEASE=1` to build & for release mode
+4. `fincher` will be installed to `/usr/local/bin` and usable anywhere, provided it's in your `PATH`.
 
 ## Usage
 
