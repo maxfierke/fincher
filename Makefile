@@ -6,7 +6,7 @@ RELEASE     ?=
 STATIC      ?=
 SOURCES      = src/*.cr src/**/*.cr
 
-override CRFLAGS += $(if $(RELEASE),--release,--debug)$(if $(STATIC),--static )$(if $(LDFLAGS),--link-flags="$(LDFLAGS)" )
+override CRFLAGS += $(if $(RELEASE),--release ,--debug )$(if $(STATIC),--static )$(if $(LDFLAGS),--link-flags="$(LDFLAGS)" )
 
 .PHONY: all
 all: build
