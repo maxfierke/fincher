@@ -28,9 +28,18 @@ encrypting the source message.
 
 ## Installation
 
+### via Homebrew (macOS users)
+
+```
+$ brew tap maxfierke/fincher
+$ brew install fincher
+```
+
+### Manually
+
 1. Ensure you have the [crystal compiler installed](https://crystal-lang.org/docs/installation/) (0.25.1+)
 2. Clone this repo
-3. Run `make install RELEASE=1` to build & for release mode
+3. Run `make install RELEASE=1` to build for release mode and install
 4. `fincher` will be installed to `/usr/local/bin` and usable anywhere, provided it's in your `PATH`.
 
 ## Usage
