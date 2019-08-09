@@ -6,13 +6,12 @@ module Fincher
       def initialize(@seed : UInt32, @n : Int32)
       end
 
-      def replace(to_replace : String | Char) : String | Char
-        case to_replace
-        when String
-          to_replace.gsub { |c| n_shift(c) }
-        else
-          n_shift(to_replace)
-        end
+      def replace(to_replace : Char) : Char
+        n_shift(to_replace)
+      end
+
+      def replace(to_replace : String) : String
+        to_replace.gsub { |c| n_shift(c) }
       end
 
       private def n_shift(char : Char) : Char

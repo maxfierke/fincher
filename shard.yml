@@ -9,8 +9,8 @@ dependencies:
     github: schovi/baked_file_system
     version: ~> 0.9.8
   cli:
-    github: mosop/cli
-    version: ~> 0.7.0
+    github: drujensen/cli
+    version: ~> 0.8.0
 
 targets:
   fincher:

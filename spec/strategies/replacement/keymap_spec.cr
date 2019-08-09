@@ -9,7 +9,7 @@ describe Fincher::ReplacementStrategies::Keymap do
         to_replace = 'b'
         replaced = keymap_replacer.replace(to_replace)
 
-        replaced.should match(/^[vghnVGHN]$/)
+        replaced.to_s.should match(/^[vghnVGHN]$/)
       end
     end
 

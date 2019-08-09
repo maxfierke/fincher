@@ -6,7 +6,7 @@ RELEASE     ?=
 STATIC      ?=
 SOURCES      = src/*.cr src/**/*.cr
 
-override CRFLAGS += $(if $(RELEASE),--release ,--debug )$(if $(STATIC),--static )$(if $(LDFLAGS),--link-flags="$(LDFLAGS)" )
+override CRFLAGS += --warnings=all --error-trace $(if $(RELEASE),--release ,--debug )$(if $(STATIC),--static )$(if $(LDFLAGS),--link-flags="$(LDFLAGS)" )
 
 .PHONY: all
 all: build
@@ -29,7 +29,7 @@ clean:
 
 .PHONY: test
 test: deps $(SOURCES)
-	$(CRYSTAL_BIN) spec
+	$(CRYSTAL_BIN) spec $(CRFLAGS)
 
 .PHONY: spec
 spec: test

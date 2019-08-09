@@ -6,20 +6,19 @@ module Fincher
       def initialize(@seed : UInt32, @keymap : Fincher::Types::Keymap)
       end
 
-      def replace(to_replace : String | Char) : String | Char
-        case to_replace
-        when String
-          to_replace.gsub { |c| keymap_replace(c) }
-        else
-          keymap_replace(to_replace)
-        end
+      def replace(to_replace : Char) : Char
+        keymap_replace(to_replace)
       end
 
-      private def keymap_replace(to_replace)
-        keymap_entry = keymap[to_replace]?
+      def replace(to_replace : String) : String
+        to_replace.gsub { |c| keymap_replace(c) }
+      end
+
+      private def keymap_replace(to_replace : Char) : Char
+        keymap_entry = keymap[to_replace.to_s]?
 
         if keymap_entry
-          keymap_entry.neighbors.sample(sampler)
+          keymap_entry.neighbors.sample(sampler).char_at(0)
         else
           raise UnknownKeyError.new("Unknown key '#{to_replace}' in keymap")
         end
