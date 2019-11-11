@@ -1,5 +1,5 @@
 name: fincher
-version: 0.1.0
+version: 0.1.1
 
 authors:
   - Max Fierke <max@maxfierke.com>
@@ -16,6 +16,6 @@ targets:
   fincher:
     main: src/cli.cr
 
-crystal: 0.25.1
+crystal: 0.31.1
 
 license: MIT
