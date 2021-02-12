@@ -9,7 +9,7 @@ module Fincher
 
     class Help
       header "Encodes a message as typos within a source text."
-      footer "(C) 2017 Max Fierke"
+      footer "Copyright (c) 2017 Max Fierke. Licensed under The MIT License."
     end
 
     class Encode < ::Cli::Command
