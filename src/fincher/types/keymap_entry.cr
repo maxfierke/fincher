@@ -1,10 +1,10 @@
 module Fincher
   module Types
     class KeymapEntry
-      YAML.mapping(
-        shift: String,
-        neighbors: Array(String)
-      )
+      include YAML::Serializable
+
+      property shift : String
+      property neighbors : Array(String)
     end
   end
 end

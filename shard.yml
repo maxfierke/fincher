@@ -1,5 +1,5 @@
 name: fincher
-version: 0.1.1
+version: 0.1.2
 
 authors:
   - Max Fierke <max@maxfierke.com>
@@ -7,15 +7,16 @@ authors:
 dependencies:
   baked_file_system:
     github: schovi/baked_file_system
-    version: ~> 0.9.8
+    branch: master
+
   cli:
-    github: drujensen/cli
-    version: ~> 0.8.0
+    github: amberframework/cli
+    version: ~> 0.9.3
 
 targets:
   fincher:
     main: src/cli.cr
 
-crystal: 0.31.1
+crystal: 0.36.1
 
 license: MIT

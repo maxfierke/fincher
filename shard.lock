@@ -1,22 +1,22 @@
-version: 1.0
+version: 2.0
 shards:
   baked_file_system:
-    github: schovi/baked_file_system
-    version: 0.9.8
+    git: https://github.com/schovi/baked_file_system.git
+    version: 0.9.8+git.commit.7183bfde8d86a976a6912f582b51cbd1783456af
 
   callback:
-    github: drujensen/callback
+    git: https://github.com/amberframework/callback.git
     version: 0.7.1
 
   cli:
-    github: drujensen/cli
-    version: 0.8.0
+    git: https://github.com/amberframework/cli.git
+    version: 0.9.3
 
   optarg:
-    github: drujensen/optarg
-    version: 0.7.0
+    git: https://github.com/amberframework/optarg.git
+    version: 0.8.0
 
   string_inflection:
-    github: mosop/string_inflection
+    git: https://github.com/mosop/string_inflection.git
     version: 0.2.1
 

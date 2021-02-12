@@ -1,11 +1,9 @@
 module Fincher
   module Types
     class Keymap
-      YAML.mapping(
-        data: {
-          type: Hash(String, KeymapEntry)
-        }
-      )
+      include YAML::Serializable
+
+      property data : Hash(String, KeymapEntry)
 
       def [](key)
         data[key]?.not_nil!
