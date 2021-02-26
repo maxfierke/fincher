@@ -21,26 +21,16 @@ module Fincher
 
       plaintext_scanner.each_char do |msg_char|
         # Advance position
-        displacer.advance_to_next!(source_scanner, msg_char)
-
-        # Grab previously unmodified section
-        read_size = source_scanner.offset - current_offset
-        source_scanner.seek(current_offset)
-
-        if read_size > 0
-          unmodified = source_scanner.read_string(read_size)
-          io << unmodified
-        end
+        displacer.advance_to_next!(source_scanner, msg_char, io: io)
 
         # Replace the next char
         replaced_char = replacer.replace(msg_char)
         io << replaced_char
 
-        # Record this offset (+ 1 skipping the current char)
-        current_offset = source_scanner.offset + 1
+        # Skip the current char, since we just replace it
+        source_scanner.skip(1)
       end
 
-      source_scanner.skip(1)
       io << source_scanner.gets_to_end
       io
     end

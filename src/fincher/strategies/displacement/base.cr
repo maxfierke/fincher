@@ -7,7 +7,7 @@ module Fincher
       def initialize(@plaintext_scanner : Fincher::IO, @seed : UInt32)
       end
 
-      abstract def advance_to_next!(scanner : Fincher::IOScanner, msg_char : Char) : Fincher::IOScanner
+      abstract def advance_to_next!(scanner : Fincher::IOScanner, msg_char : Char, io : ::IO) : Fincher::IOScanner
 
       abstract def is_feasible?(scanner : Fincher::IOScanner)
     end

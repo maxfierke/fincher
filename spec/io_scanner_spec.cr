@@ -127,6 +127,19 @@ describe Fincher::IOScanner, "#rest" do
   end
 end
 
+describe Fincher::IOScanner, "#gets_to_end" do
+  it "returns the remainder of the string from the offset" do
+    s = Fincher::IOScanner.new(::IO::Memory.new("this is a string"))
+    s.rest.should eq("this is a string")
+
+    s.scan(/this is a /)
+    s.rest.should eq("string")
+
+    s.scan(/string/)
+    s.rest.should eq("")
+  end
+end
+
 describe Fincher::IOScanner, "#[]" do
   it "allows access to subgroups of the last match" do
     s = Fincher::IOScanner.new(::IO::Memory.new("Fri Dec 12 1975 14:39"))

@@ -16,8 +16,8 @@ module Fincher
       @seed : UInt32?
 
       class Options
-        arg "source_text_file", required: true, desc: "source text file"
         arg "message", required: true, desc: "message"
+        arg "source_text_file", required: false, desc: "source text file. STDIN, if omitted"
         string "--seed",
                var: "NUMBER",
                required: false,
@@ -57,7 +57,12 @@ module Fincher
         plaintext_scanner = ::IO::Memory.new(args.message)
         displacement_strategy = options.displacement_strategy
         replacement_strategy = options.replacement_strategy
-        source_file = File.open(args.source_text_file)
+
+        source_file = if source_text_file = args.source_text_file?
+          File.open(source_text_file)
+        else
+          STDIN
+        end
 
         transformer = Fincher::Transformer.new(
           plaintext_scanner,
@@ -122,7 +127,7 @@ module Fincher
       end
 
       def run
-        puts "Fincher #{version}"
+        puts "fincher #{version}"
       end
     end
   end
