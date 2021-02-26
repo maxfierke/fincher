@@ -15,6 +15,10 @@ module Fincher
     def initialize(@io : Fincher::IO)
     end
 
+    def stdin?
+      io == STDIN
+    end
+
     def [](index)
       @last_match.not_nil![index]
     end
@@ -33,6 +37,10 @@ module Fincher
 
     def rest
       rest_of_buffer + io.gets_to_end
+    end
+
+    def gets_to_end
+      rest
     end
 
     def string
@@ -58,6 +66,10 @@ module Fincher
       match(pattern, advance: false, options: Regex::Options::None)
     end
 
+    def skip(bytes_count : Int)
+      self.offset += bytes_count
+    end
+
     def skip(pattern : Regex)
       match = scan(pattern)
       match.size if match
@@ -81,11 +93,38 @@ module Fincher
     end
 
     def offset=(position)
-      raise IndexError.new if position < 0 || position >= size
-      @buffer_io_offset = position
-      io.pos = position
-      @eof_reached = false
-      next_buffer!(position)
+      raise IndexError.new if position < 0
+
+      buffer_io_offset = @buffer_io_offset
+      buffer_cursor = @buffer_cursor
+      buffer = @buffer
+      buffer_io_end_offset = buffer_io_offset + buffer.bytesize
+
+      advance = (position - (buffer_io_offset + buffer_cursor)).to_i32
+
+      if position > buffer_io_offset && position < buffer_io_end_offset
+        @buffer_cursor += advance
+      elsif stdin?
+        # We cannot go backwards with STDIN
+        raise IndexError.new if position < buffer_io_offset
+
+        @buffer_io_offset = position
+
+        begin
+          io.skip(advance)
+        rescue ::IO::EOFError
+          # next_buffer! will handle EOF
+        end
+
+        next_buffer!(position)
+      else
+        # We don't want to overrun
+        raise IndexError.new if position >= size
+        @buffer_io_offset = position
+        io.pos = position
+        @eof_reached = false
+        next_buffer!(position)
+      end
     end
 
     def pos
@@ -94,6 +133,11 @@ module Fincher
 
     def pos=(position)
       self.offset = position
+    end
+
+    def print_buffer_position
+      puts @buffer
+      puts "#{" " * (Math.max(0, @buffer_cursor - 1))}^"
     end
 
     def size
@@ -126,7 +170,7 @@ module Fincher
     end
 
     private def rest_of_buffer
-      @buffer[@buffer_cursor, buffer_size]
+      buffer[@buffer_cursor, buffer_size]
     end
 
     private def buffer_size
@@ -182,15 +226,24 @@ module Fincher
     private def next_buffer!(anchor_position = nil)
       before_offset = anchor_position || offset
 
-      begin
-        buf = io.read_string(BUFFER_SIZE)
-      rescue ::IO::EOFError
-        io.pos = before_offset
-        buf = io.gets_to_end
+      buf = Bytes.new(BUFFER_SIZE)
+      bytes_read = io.read(buf)
+
+      if bytes_read < BUFFER_SIZE
         @eof_reached = true
       end
 
-      @buffer_io_offset = io.pos - buf.bytesize
+      if bytes_read > 0
+        buf = String.new(buf[0, bytes_read])
+      else
+        buf = String.new
+      end
+
+      @buffer_io_offset = if stdin?
+        before_offset + bytes_read
+      else
+        io.pos - bytes_read
+      end
       @buffer_cursor = 0
       @buffer = buf
       buf
