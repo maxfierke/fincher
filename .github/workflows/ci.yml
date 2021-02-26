@@ -18,7 +18,7 @@ jobs:
       run: curl -sSL https://dist.crystal-lang.org/apt/setup.sh | sudo bash
 
     - name: Install crystal
-      run: sudo apt install -y crystal libevent-dev libpcre3-dev libreadline-dev libssl-dev
+      run: sudo apt install -y crystal libevent-dev libpcre3-dev libreadline-dev libssl-dev libyaml-dev
 
     - name: Install dependencies
       run: shards install
