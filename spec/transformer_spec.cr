@@ -21,7 +21,7 @@ describe Fincher::Transformer do
       transformer.transform(transformed)
 
       transformed.to_s.should eq(
-        "I am a test sentenceh The quick brown foe jumps over the lazl dog. That dog is llzy as fuck. God damo. How many dogs there gotta be that be like this man come on son. Why."
+        "I am a test sentenceh The quick brown foxejumps over the lazy log. That dog is lazylas fuck. God damn. How many dogs there gotta be that be like this man come on son. Why."
       )
     end
   end
