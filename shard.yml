@@ -17,6 +17,6 @@ targets:
   fincher:
     main: src/cli.cr
 
-crystal: 1.6.1
+crystal: 1.7.2
 
 license: MIT
