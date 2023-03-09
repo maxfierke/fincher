@@ -12,7 +12,7 @@ The inspiration for `fincher` comes from "Panopticon", Season 4 Episode 1 in
 Person of Interest, in which _The Machine_ encodes a message as typos in the
 dissertation of one of the main characters, Harold Finch.
 
-`fincher` is currently `0.1.0` and considered an **experiment**
+`fincher` is currently `0.2.1` and considered an **experiment**
 and a project for **funsies**. I am very interested in contributions & ideas!
 
 ## Disclaimer
@@ -37,7 +37,7 @@ $ brew install fincher
 
 ### Manually
 
-1. Ensure you have the [crystal compiler installed](https://crystal-lang.org/docs/installation/) (0.25.1+)
+1. Ensure you have the [crystal compiler installed](https://crystal-lang.org/docs/installation/) (1.7.0+)
 2. Clone this repo
 3. Run `make install RELEASE=1` to build for release mode and install
 4. `fincher` will be installed to `/usr/local/bin` and usable anywhere, provided it's in your `PATH`.
