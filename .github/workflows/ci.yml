@@ -14,11 +14,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Add Crystal repos
-      run: curl -sSL https://dist.crystal-lang.org/apt/setup.sh | sudo bash
-
-    - name: Install crystal
-      run: sudo apt install -y crystal libevent-dev libpcre2-dev libreadline-dev libssl-dev libyaml-dev
+    - uses: crystal-lang/install-crystal@v1
+      with:
+        crystal: 1.10.0
 
     - name: Install dependencies
       run: shards install
