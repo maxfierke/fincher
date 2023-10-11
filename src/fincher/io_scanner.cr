@@ -59,11 +59,11 @@ module Fincher
     end
 
     def check(pattern)
-      match(pattern, advance: false, options: Regex::Options::ANCHORED)
+      match(pattern, advance: false, options: Regex::MatchOptions::ANCHORED)
     end
 
     def check_until(pattern)
-      match(pattern, advance: false, options: Regex::Options::None)
+      match(pattern, advance: false, options: Regex::MatchOptions::None)
     end
 
     def skip(bytes_count : Int)
@@ -81,11 +81,11 @@ module Fincher
     end
 
     def scan(pattern)
-      match(pattern, advance: true, options: Regex::Options::ANCHORED)
+      match(pattern, advance: true, options: Regex::MatchOptions::ANCHORED)
     end
 
     def scan_until(pattern)
-      match(pattern, advance: true, options: Regex::Options::None)
+      match(pattern, advance: true, options: Regex::MatchOptions::None)
     end
 
     def offset
@@ -194,7 +194,7 @@ module Fincher
       last_match_str
     end
 
-    private def buffer_match(pattern, advance = true, options = Regex::Options::ANCHORED)
+    private def buffer_match(pattern, advance = true, options = Regex::MatchOptions::ANCHORED)
       match = pattern.match_at_byte_index(@buffer, @buffer_cursor, options)
       if match
         start = @buffer_cursor
