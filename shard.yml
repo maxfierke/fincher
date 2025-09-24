@@ -7,7 +7,7 @@ authors:
 dependencies:
   baked_file_system:
     github: schovi/baked_file_system
-    branch: master
+    version: ~> 0.11.0
 
   cli:
     github: amberframework/cli
