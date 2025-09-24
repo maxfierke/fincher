@@ -17,7 +17,7 @@ module Fincher
         displacement_strategy = options.string["displacement_strategy"]
         replacement_strategy = options.string["replacement_strategy"]
 
-        source_file = if source_text_file = args[1]
+        source_file = if source_text_file = args[1]?
           File.open(source_text_file)
         else
           STDIN
