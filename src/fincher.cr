@@ -1,6 +1,6 @@
 require "baked_file_system"
 require "colorize"
-require "cli"
+require "commander"
 require "random/secure"
 require "yaml"
 require "./fincher/*"

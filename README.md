@@ -12,7 +12,7 @@ The inspiration for `fincher` comes from "Panopticon", Season 4 Episode 1 in
 Person of Interest, in which _The Machine_ encodes a message as typos in the
 dissertation of one of the main characters, Harold Finch.
 
-`fincher` is currently `0.2.2` and considered an **experiment**
+`fincher` is currently `0.3.0` and considered an **experiment**
 and a project for **funsies**. I am very interested in contributions & ideas!
 
 ## Disclaimer
@@ -174,19 +174,16 @@ characters close to a message character on the keyboard.
 
 ## Limitations
 
-`fincher` is early stages and has some notable limitations:
+`fincher` has some notable limitations:
 
 * The current displacement and replacement strategies are not context-aware.
   i.e. they do not make judgements based on the content of the source text and
-  whether the replacement or displacement makes sense grammatically. This will
-  probably change.
-* Source text scanning (rightly or wrongly) happens on a rotating
-  4K buffer (so you could feed it multi-GB source text, if you wanted to) and
-  the `IOScanner` does not handle regex matching across buffer boundaries.
-  Therefore, the `--[word|char]-offset` parameters are not applied exactly, but
-  will make minimum guarantees about the offset.
-* Does not yet take input from `STDIN`, so it cannot be piped to yet. (It does
-  however, output to `STDOUT`.)
+  whether the replacement or displacement makes sense grammatically.
+* Source text scanning happens on a rotating 4K buffer (so you could feed it
+  multi-GB source text, if you wanted to), but the `IOScanner` does not handle
+  regex matching across buffer boundaries. Therefore, the `--[word|char]-offset`
+  parameters are not applied exactly, but will make minimum guarantees about the
+  offset.
 
 ## Development
 

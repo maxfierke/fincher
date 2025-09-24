@@ -1,3 +1,7 @@
 module Fincher
-  VERSION = "0.1.1"
+  # Date and time when binary was compiled
+  COMPILED_AT = {{`date -u`.chomp.stringify}}
+
+  # `fincher` version
+  VERSION = {{`shards version`.chomp.stringify}}
 end
