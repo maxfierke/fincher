@@ -115,7 +115,7 @@ DESC
           encode_cmd.flags.add do |flag|
             flag.name = "seed"
             flag.long = "--seed"
-            flag.default = 0
+            flag.default = 0_i64
             flag.description = "seed value. randomly generated if omitted"
           end
 
@@ -164,12 +164,12 @@ DESC
           encode_cmd.run do |options, arguments|
             if arguments.empty?
               Fincher.error "message is required"
-              next
+              exit 1
             end
 
             if arguments.size > 2
               Fincher.error "unexpected arguments: expected 1-2, received #{arguments.size}"
-              next
+              exit 1
             end
 
             Encode.new(options, arguments).run
