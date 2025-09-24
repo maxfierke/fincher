@@ -12,7 +12,7 @@ The inspiration for `fincher` comes from "Panopticon", Season 4 Episode 1 in
 Person of Interest, in which _The Machine_ encodes a message as typos in the
 dissertation of one of the main characters, Harold Finch.
 
-`fincher` is currently `0.3.0` and considered an **experiment**
+`fincher` is currently `0.3.1` and considered an **experiment**
 and a project for **funsies**. I am very interested in contributions & ideas!
 
 ## Disclaimer
